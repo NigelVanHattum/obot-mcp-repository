@@ -24,7 +24,7 @@ description: |
 metadata:
   categories: Networking
   allow-multiple: "false"
-icon: https://logos-world.net/wp-content/uploads/2025/01/UniFi-Logo.png
+icon: https://www.svgrepo.com/show/331623/ubiquiti.svg
 repoURL: https://github.com/NigelVanHattum/unifi-mcp
 runtime: containerized
 containerizedConfig:
