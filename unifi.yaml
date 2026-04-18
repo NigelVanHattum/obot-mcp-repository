@@ -1,0 +1,142 @@
+name: UniFi
+shortDescription: Manage UniFi Network devices, clients, firewall policies, and WiFi from your AI assistant
+description: |
+  # UniFi MCP Server
+
+  Manage your UniFi Network infrastructure through natural language. Control devices, clients,
+  firewall policies, ACL rules, DNS policies, VPN tunnels, and WiFi broadcasts across all your sites.
+
+  ## Features
+  - **Device Management**: List adopted/pending devices, execute device actions, view statistics
+  - **Client Management**: List and manage connected clients, execute client actions
+  - **Firewall & ACL**: Get and update firewall policies, zones, and ACL rules with ordering control
+  - **Network Configuration**: Manage networks, WAN interfaces, and traffic matching lists
+  - **WiFi Management**: View and update WiFi broadcasts
+  - **VPN**: List site-to-site VPN tunnels and VPN servers
+  - **DNS Policies**: View and update DNS policies
+  - **Vouchers**: Manage guest network vouchers
+  - **Port Control**: Execute port-level actions
+
+  ## What you'll need to connect
+
+  You will need access to a UniFi Network application (self-hosted or UniFi Cloud) with API credentials.
+
+metadata:
+  categories: Networking
+  allow-multiple: "false"
+icon: https://img.icons8.com/?size=100&id=OBiCGPMJCmAk&format=png
+repoURL: https://github.com/NigelVanHattum/unifi-mcp
+runtime: containerized
+containerizedConfig:
+  image: ghcr.io/nigelvanhattum/unifi-mcp:latest
+  port: 8000
+  path: "/sse"
+env:
+  - key: UNIFI_HOST
+    name: UniFi Host
+    required: true
+    sensitive: false
+    description: Hostname or IP address of your UniFi Network application (e.g. 192.168.1.1 or unifi.example.com)
+  - key: UNIFI_API_KEY
+    name: UniFi API Key
+    required: true
+    sensitive: true
+    description: API key generated in your UniFi Network application under Settings > Control Plane > API
+  - key: UNIFI_VERIFY_SSL
+    name: Verify SSL
+    required: false
+    sensitive: false
+    description: Whether to verify SSL certificates when connecting to UniFi (true/false, default true)
+
+toolPreview:
+  - name: list_sites
+    description: List all sites managed by the UniFi Network application.
+    params: {}
+  - name: list_adopted_devices
+    description: List all adopted devices on a site.
+    params:
+      siteId: The ID of the site to list devices for
+  - name: get_adopted_device
+    description: Get details for a specific adopted device.
+    params:
+      siteId: The ID of the site
+      deviceId: The ID of the device
+  - name: get_device_statistics
+    description: Get statistics for a specific device.
+    params:
+      siteId: The ID of the site
+      deviceId: The ID of the device
+  - name: list_pending_devices
+    description: List devices that have been discovered but not yet adopted.
+    params:
+      siteId: The ID of the site
+  - name: execute_device_action
+    description: Execute an action on a device (e.g. restart, upgrade).
+    params:
+      siteId: The ID of the site
+      deviceId: The ID of the device
+      action: The action to execute
+  - name: list_clients
+    description: List all clients connected to a site.
+    params:
+      siteId: The ID of the site
+  - name: get_client
+    description: Get details for a specific client.
+    params:
+      siteId: The ID of the site
+      clientId: The ID of the client
+  - name: execute_client_action
+    description: Execute an action on a client (e.g. block, unblock).
+    params:
+      siteId: The ID of the site
+      clientId: The ID of the client
+      action: The action to execute
+  - name: list_networks
+    description: List all networks configured on a site.
+    params:
+      siteId: The ID of the site
+  - name: get_network
+    description: Get details for a specific network.
+    params:
+      siteId: The ID of the site
+      networkId: The ID of the network
+  - name: list_firewall_policies
+    description: List all firewall policies on a site.
+    params:
+      siteId: The ID of the site
+  - name: get_firewall_policy
+    description: Get details for a specific firewall policy.
+    params:
+      siteId: The ID of the site
+      policyId: The ID of the firewall policy
+  - name: update_firewall_policy
+    description: Update a firewall policy.
+    params:
+      siteId: The ID of the site
+      policyId: The ID of the firewall policy
+  - name: list_acl_rules
+    description: List all ACL rules on a site.
+    params:
+      siteId: The ID of the site
+  - name: update_acl_rule
+    description: Update an ACL rule.
+    params:
+      siteId: The ID of the site
+      ruleId: The ID of the ACL rule
+  - name: list_wifi_broadcasts
+    description: List all WiFi broadcasts (SSIDs) on a site.
+    params:
+      siteId: The ID of the site
+  - name: update_wifi_broadcast
+    description: Update a WiFi broadcast configuration.
+    params:
+      siteId: The ID of the site
+      wifiId: The ID of the WiFi broadcast
+  - name: list_site_to_site_vpn_tunnels
+    description: List all site-to-site VPN tunnels on a site.
+    params:
+      siteId: The ID of the site
+  - name: list_vouchers
+    description: List guest network vouchers on a site.
+    params:
+      siteId: The ID of the site
