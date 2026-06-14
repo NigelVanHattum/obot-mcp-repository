@@ -1,0 +1,119 @@
+name: Mealie
+shortDescription: Store, organize, and verify recipes in Mealie — ideal for importing cookbooks
+description: |
+  # Mealie MCP Server
+
+  Turn cookbooks into a searchable recipe collection. This server lets an AI
+  assistant read a recipe (e.g. from a PDF), translate it if needed, and store
+  it in your [Mealie](https://mealie.io) instance — then verify the result.
+
+  ## Features
+  - **Create recipes in one step**: Add a complete recipe — ingredients,
+    instructions, times, yield, nutrition — with a single tool call.
+  - **Merge or overwrite**: Update only some fields (non-destructive) or do an
+    explicit full replace when re-importing a recipe from scratch.
+  - **Organizers**: Assign categories, tags, and tools by name — they are
+    created automatically if they don't exist yet.
+  - **Foods & units**: List and create structured ingredient foods and units.
+  - **Verification**: Read back recipes, search the collection, and confirm the
+    connected user — so the assistant can check its own work.
+
+  ## What you'll need to connect
+
+  - The base URL of your Mealie instance (e.g. `https://mealie.example.com`)
+  - A Mealie API token — create one under your profile at **Settings > API Tokens**
+
+  The server connects to Mealie using API keys only.
+
+metadata:
+  categories: Productivity
+  allow-multiple: "false"
+icon: https://docs.mealie.io/assets/img/favicon.png
+repoURL: https://github.com/NigelVanHattum/mealie-mcp
+runtime: containerized
+containerizedConfig:
+  image: ghcr.io/nigelvanhattum/mealie-mcp:latest
+  port: 8000
+  path: "/sse"
+env:
+  - key: MEALIE_BASE_URL
+    name: Mealie Base URL
+    required: true
+    sensitive: false
+    description: Base URL of your Mealie instance, without a trailing slash (e.g. https://mealie.example.com)
+  - key: MEALIE_API_TOKEN
+    name: Mealie API Token
+    required: true
+    sensitive: true
+    description: Long-lived API token from Mealie under Settings > API Tokens. Sent as a Bearer token.
+  - key: MEALIE_VERIFY_SSL
+    name: Verify SSL
+    required: false
+    sensitive: false
+    description: Whether to verify SSL certificates when connecting to Mealie (true/false, default true)
+
+toolPreview:
+  - name: get_current_user
+    description: Get the authenticated Mealie user — verifies the API token works.
+    params: {}
+  - name: get_server_info
+    description: Get Mealie server info (version) as a connectivity check.
+    params: {}
+  - name: list_recipes
+    description: List or search recipes (paginated). Use to verify storage or find duplicates.
+    params:
+      search: Optional full-text search across recipes
+      page: 1-based page number (default 1)
+      perPage: Items per page (default 50)
+  - name: get_recipe
+    description: Get a single recipe in full by its slug, including ingredients and instructions.
+    params:
+      slug: The slug of the recipe
+  - name: create_recipe
+    description: Create a complete recipe in one call. Returns the stored recipe with its slug.
+    params:
+      name: Recipe title
+      ingredients: List of ingredient lines (strings)
+      instructions: Ordered preparation steps (strings)
+      categories: Category names (created if missing)
+      tags: Tag names (created if missing)
+  - name: update_recipe
+    description: Update an existing recipe by slug. Only the fields you provide are changed.
+    params:
+      slug: The slug of the recipe to update
+  - name: overwrite_recipe
+    description: Replace a recipe's entire content by slug. Omitted content fields are cleared.
+    params:
+      slug: The slug of the recipe to overwrite
+  - name: delete_recipe
+    description: Delete a recipe by slug. Destructive and not reversible.
+    params:
+      slug: The slug of the recipe to delete
+  - name: list_categories
+    description: List recipe categories (paginated).
+    params: {}
+  - name: create_category
+    description: Create a recipe category by name.
+    params:
+      name: Category name
+  - name: list_tags
+    description: List recipe tags (paginated).
+    params: {}
+  - name: create_tag
+    description: Create a recipe tag by name.
+    params:
+      name: Tag name
+  - name: list_foods
+    description: List ingredient foods (paginated).
+    params: {}
+  - name: create_food
+    description: Create an ingredient food.
+    params:
+      name: Food name (e.g. flour)
+  - name: list_units
+    description: List ingredient units (paginated).
+    params: {}
+  - name: create_unit
+    description: Create an ingredient unit.
+    params:
+      name: Unit name (e.g. gram)

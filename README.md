@@ -33,3 +33,4 @@ Each MCP server is defined by a single YAML file at the root of the repository.
 | Name | Category | Description |
 |---|---|---|
 | [UniFi](./unifi.yaml) | Networking | Manage UniFi Network devices, clients, firewall, and WiFi |
+| [Mealie](./mealie.yaml) | Productivity | Store, organize, and verify recipes in Mealie — ideal for importing cookbooks |
