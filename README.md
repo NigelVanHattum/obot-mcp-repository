@@ -34,3 +34,4 @@ Each MCP server is defined by a single YAML file at the root of the repository.
 |---|---|---|
 | [UniFi](./unifi.yaml) | Networking | Manage UniFi Network devices, clients, firewall, and WiFi |
 | [Mealie](./mealie.yaml) | Productivity | Store, organize, and verify recipes in Mealie — ideal for importing cookbooks |
+| [Trading 212](./trading212.yaml) | Finance | Read account data and manage equity orders and positions via the Trading 212 API |
