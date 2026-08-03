@@ -9,10 +9,15 @@ description: |
   and request CSV exports.
 
   ## Features
-  - **Account**: Account cash & investment summary, all open positions
-  - **Instruments**: Tradable instrument metadata and exchange schedules
+  - **Account**: Account cash & investment summary, open positions for the whole portfolio or a single instrument
+  - **Instruments**: Search the instrument catalogue by Trading 212 ID, ISIN, name or type, plus exchange schedules
   - **Orders**: Place market / limit / stop / stop-limit orders, list, inspect and cancel orders
   - **History**: Historical orders, paid dividends, account transactions, CSV exports
+
+  ## Rate limits
+  Trading 212 applies its rate limits per account. Calls are queued and paced
+  against each endpoint's published limit, so tools wait their turn rather than
+  failing with a 429.
 
   ## Environments
   The server targets the **demo / paper** environment by default. Set `TRADING212_LIVE`
@@ -55,13 +60,17 @@ toolPreview:
     description: Get a breakdown of the account's cash and investment metrics.
     params: {}
   - name: get_positions
-    description: Fetch all open positions with quantity, average price and profit/loss.
-    params: {}
-  - name: list_instruments
-    description: List all tradable instruments and their details.
+    description: Fetch open positions with quantity, average price and profit/loss.
     params:
-      limit: Page size (default 20, max 50)
-      cursor: Pagination cursor from a previous page
+      ticker: Optional Trading 212 instrument ID, e.g. AAPL_US_EQ; omit for every open position
+  - name: list_instruments
+    description: Search tradable instruments by Trading 212 ID, ISIN, name or type.
+    params:
+      trading212Id: Trading 212 instrument ID, e.g. AAPL_US_EQ; matches exact, prefix or substring
+      isin: ISIN, e.g. US0378331005; exact match, case and spacing ignored
+      name: Instrument name, e.g. Coca Cola; punctuation ignored, every word must appear
+      type: Restrict to one instrument type, e.g. STOCK or ETF
+      limit: Maximum instruments to return (default 20, max 100)
   - name: list_exchanges
     description: List all accessible exchanges and their working schedules.
     params: {}
@@ -81,18 +90,21 @@ toolPreview:
     params:
       ticker: Instrument ticker, e.g. AAPL_US_EQ
       quantity: Share quantity; positive = buy, negative = sell
+      extendedHours: Allow execution during extended trading hours
   - name: place_limit_order
     description: Place a limit order that executes at limitPrice or better.
     params:
       ticker: Instrument ticker, e.g. AAPL_US_EQ
       quantity: Share quantity; positive = buy, negative = sell
       limitPrice: Limit price
+      timeValidity: Order time validity, DAY or GOOD_TILL_CANCEL
   - name: place_stop_order
     description: Place a stop order triggered when the price reaches stopPrice.
     params:
       ticker: Instrument ticker, e.g. AAPL_US_EQ
       quantity: Share quantity; positive = buy, negative = sell
       stopPrice: Trigger price
+      timeValidity: Order time validity, DAY or GOOD_TILL_CANCEL
   - name: place_stop_limit_order
     description: Place a stop-limit order triggered at stopPrice, then placed at limitPrice.
     params:
@@ -100,26 +112,34 @@ toolPreview:
       quantity: Share quantity; positive = buy, negative = sell
       stopPrice: Trigger price
       limitPrice: Limit price applied after trigger
+      timeValidity: Order time validity, DAY or GOOD_TILL_CANCEL
   - name: get_historical_orders
     description: Access historical order records.
     params:
       limit: Page size (default 20, max 50)
-      cursor: Pagination cursor from a previous page
+      cursor: Pagination cursor from the previous page's nextPagePath
+      ticker: Optional Trading 212 instrument ID filter, e.g. AAPL_US_EQ
   - name: get_dividends
     description: Retrieve paid dividends.
     params:
       limit: Page size (default 20, max 50)
-      cursor: Pagination cursor from a previous page
+      cursor: Pagination cursor from the previous page's nextPagePath
+      ticker: Optional Trading 212 instrument ID filter, e.g. AAPL_US_EQ
   - name: get_transactions
     description: Fetch cash movements to and from the account.
     params:
       limit: Page size (default 20, max 50)
-      cursor: Pagination cursor from a previous page
+      cursor: Pagination cursor from the previous page's nextPagePath
+      time: Return transactions from this moment onwards, ISO-8601 e.g. 2024-01-01T00:00:00Z
   - name: list_exports
     description: List requested CSV reports and their generation status.
     params: {}
   - name: request_export
     description: Request a CSV export of historical account data over a time window.
     params:
-      timeFrom: Start of window, ISO-8601
-      timeTo: End of window, ISO-8601
+      timeFrom: Start of window, ISO-8601 e.g. 2024-01-01T00:00:00Z
+      timeTo: End of window, ISO-8601 e.g. 2024-12-31T00:00:00Z
+      includeDividends: Include dividends in the export (default true)
+      includeInterest: Include interest in the export (default true)
+      includeOrders: Include orders in the export (default true)
+      includeTransactions: Include transactions in the export (default true)
