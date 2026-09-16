@@ -30,7 +30,7 @@ runtime: containerized
 containerizedConfig:
   image: ghcr.io/nigelvanhattum/unifi-mcp:latest
   port: 8000
-  path: "/sse"
+  path: "/mcp"
 env:
   - key: UNIFI_HOST
     name: UniFi Host
