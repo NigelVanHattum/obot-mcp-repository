@@ -1,0 +1,147 @@
+name: Paperclip
+shortDescription: Work with Paperclip issues, comments, documents, approvals, projects, goals, and agents
+description: |
+  # Paperclip MCP Server
+
+  Connect your AI assistant to a [Paperclip](https://github.com/paperclipai/paperclip) instance.
+  This is the official Paperclip MCP server: a thin wrapper over the Paperclip REST API
+  that does not touch the database or reimplement business logic.
+
+  ## Features
+  - **Issues**: List, read, create, and update issues; checkout and release them for an agent
+  - **Comments**: Read issue comment threads and add comments
+  - **Interactions**: Suggest tasks, ask the board questions, and request confirmation on an issue
+  - **Documents**: Read, create, update, and restore revisions of issue documents
+  - **Approvals**: Create, link, and decide on board approvals, and comment on them
+  - **Projects, goals & agents**: Browse the company's projects, goals, agents, and skill library
+  - **Workspaces**: Inspect and start, stop, or restart an issue's execution workspace services
+  - **Escape hatch**: `paperclipApiRequest` calls any `/api` endpoint that has no dedicated tool yet
+
+  ## What you'll need to connect
+
+  - The base URL of your Paperclip instance (e.g. `https://paperclip.example.com`)
+  - A Paperclip API key — the bearer token used for `/api` requests. Its permissions decide
+    what the tools can see and change.
+  - Optionally a default company ID, so company-scoped tools work without passing one each time
+
+metadata:
+  categories: Productivity
+  allow-multiple: "false"
+icon: https://raw.githubusercontent.com/paperclipai/paperclip/master/ui/public/favicon.svg
+repoURL: https://github.com/paperclipai/paperclip/tree/master/packages/mcp-server
+runtime: npx
+npxConfig:
+  package: "@paperclipai/mcp-server@latest"
+env:
+  - key: PAPERCLIP_API_URL
+    name: Paperclip API URL
+    required: true
+    sensitive: false
+    description: Base URL of your Paperclip instance (e.g. https://paperclip.example.com). The /api suffix is added automatically.
+  - key: PAPERCLIP_API_KEY
+    name: Paperclip API Key
+    required: true
+    sensitive: true
+    description: Bearer token used for Paperclip /api requests
+  - key: PAPERCLIP_COMPANY_ID
+    name: Default Company ID
+    required: false
+    sensitive: false
+    description: Company UUID used by company-scoped tools when no companyId is passed
+  - key: PAPERCLIP_AGENT_ID
+    name: Default Agent ID
+    required: false
+    sensitive: false
+    description: Agent UUID used by the checkout helpers when no agentId is passed
+
+toolPreview:
+  - name: paperclipMe
+    description: Get the current authenticated Paperclip actor details.
+    params: {}
+  - name: paperclipInboxLite
+    description: Get the current authenticated agent's inbox-lite assignment list.
+    params: {}
+  - name: paperclipListAgents
+    description: List agents in a company.
+    params:
+      companyId: Optional company UUID; defaults to PAPERCLIP_COMPANY_ID
+  - name: paperclipListIssues
+    description: List issues for a company with optional filters.
+    params:
+      companyId: Optional company UUID; defaults to PAPERCLIP_COMPANY_ID
+      status: Optional issue status filter
+      projectId: Optional project UUID filter
+      assigneeAgentId: Optional assignee agent UUID filter
+      q: Optional full-text search
+  - name: paperclipGetIssue
+    description: Get a single issue by UUID or identifier.
+    params:
+      issueId: Issue UUID or identifier
+  - name: paperclipCreateIssue
+    description: Create a new issue.
+    params:
+      companyId: Optional company UUID; defaults to PAPERCLIP_COMPANY_ID
+      title: Issue title
+      description: Issue description
+  - name: paperclipUpdateIssue
+    description: Patch an issue, optionally including a comment.
+    params:
+      issueId: Issue UUID or identifier
+  - name: paperclipCheckoutIssue
+    description: Checkout an issue for an agent.
+    params:
+      issueId: Issue UUID or identifier
+      agentId: Optional agent UUID; defaults to PAPERCLIP_AGENT_ID
+  - name: paperclipReleaseIssue
+    description: Release an issue checkout.
+    params:
+      issueId: Issue UUID or identifier
+  - name: paperclipListComments
+    description: List issue comments with incremental options.
+    params:
+      issueId: Issue UUID or identifier
+      after: Only return comments after this comment UUID
+      order: Sort order, asc or desc
+      limit: Maximum comments to return (max 500)
+  - name: paperclipAddComment
+    description: Add a comment to an issue.
+    params:
+      issueId: Issue UUID or identifier
+      body: Comment body (markdown)
+  - name: paperclipGetDocument
+    description: Get one issue document by key.
+    params:
+      issueId: Issue UUID or identifier
+      key: Document key
+  - name: paperclipUpsertIssueDocument
+    description: Create or update an issue document.
+    params:
+      issueId: Issue UUID or identifier
+      key: Document key
+      title: Optional document title
+      body: Document body (markdown)
+  - name: paperclipListProjects
+    description: List projects in a company.
+    params:
+      companyId: Optional company UUID; defaults to PAPERCLIP_COMPANY_ID
+  - name: paperclipListGoals
+    description: List goals in a company.
+    params:
+      companyId: Optional company UUID; defaults to PAPERCLIP_COMPANY_ID
+  - name: paperclipListApprovals
+    description: List approvals in a company.
+    params:
+      companyId: Optional company UUID; defaults to PAPERCLIP_COMPANY_ID
+      status: Optional approval status filter
+  - name: paperclipApprovalDecision
+    description: Approve, reject, request revision, or resubmit an approval.
+    params:
+      approvalId: Approval UUID
+      action: approve, reject, requestRevision or resubmit
+      decisionNote: Optional note explaining the decision
+  - name: paperclipApiRequest
+    description: Make a JSON request to an existing Paperclip /api endpoint for unsupported operations.
+    params:
+      method: HTTP method (GET, POST, PUT, PATCH or DELETE)
+      path: Path under /api
+      jsonBody: Optional JSON request body as a string

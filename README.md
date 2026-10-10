@@ -17,8 +17,9 @@ Each MCP server is defined by a single YAML file at the root of the repository.
 | `metadata.allow-multiple` | Whether multiple instances are allowed |
 | `icon` | URL to icon image |
 | `repoURL` | Source GitHub repository |
-| `runtime` | `containerized` or `node` or `python` |
+| `runtime` | `containerized`, `npx` (Node package), `uvx` (Python package) |
 | `containerizedConfig` | `image`, `port`, `path` for containerized servers |
+| `npxConfig` | `package` (npm package spec) for `npx` servers |
 | `env` | List of required/optional environment variables |
 | `toolPreview` | Sample tools exposed by the server |
 
@@ -35,3 +36,4 @@ Each MCP server is defined by a single YAML file at the root of the repository.
 | [UniFi](./unifi.yaml) | Networking | Manage UniFi Network devices, clients, firewall, and WiFi |
 | [Mealie](./mealie.yaml) | Productivity | Store, organize, and verify recipes in Mealie — ideal for importing cookbooks |
 | [Trading 212](./trading212.yaml) | Finance | Read account data and manage equity orders and positions via the Trading 212 API |
+| [Paperclip](./paperclip.yaml) | Productivity | Work with Paperclip issues, comments, documents, approvals, projects, and agents |
