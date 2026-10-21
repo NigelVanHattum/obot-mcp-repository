@@ -20,7 +20,6 @@ description: |
   ## What you'll need to connect
 
   You will need access to a UniFi Network application (self-hosted or UniFi Cloud) with API credentials.
-
 metadata:
   categories: Networking
   allow-multiple: "false"
@@ -31,23 +30,6 @@ containerizedConfig:
   image: ghcr.io/nigelvanhattum/unifi-mcp:latest
   port: 8000
   path: "/mcp"
-env:
-  - key: UNIFI_HOST
-    name: UniFi Host
-    required: true
-    sensitive: false
-    description: Hostname or IP address of your UniFi Network application (e.g. 192.168.1.1 or unifi.example.com)
-  - key: UNIFI_API_KEY
-    name: UniFi API Key
-    required: true
-    sensitive: true
-    description: API key generated in your UniFi Network application under Settings > Control Plane > API
-  - key: UNIFI_VERIFY_SSL
-    name: Verify SSL
-    required: false
-    sensitive: false
-    description: Whether to verify SSL certificates when connecting to UniFi (true/false, default true)
-
 toolPreview:
   - name: list_sites
     description: List all sites managed by the UniFi Network application.
@@ -140,3 +122,22 @@ toolPreview:
     description: List guest network vouchers on a site.
     params:
       siteId: The ID of the site
+config:
+  - key: UNIFI_HOST
+    name: UniFi Host
+    required: true
+    sensitive: false
+    description: Hostname or IP address of your UniFi Network application (e.g. 192.168.1.1 or unifi.example.com)
+    usage: env
+  - key: UNIFI_API_KEY
+    name: UniFi API Key
+    required: true
+    sensitive: true
+    description: API key generated in your UniFi Network application under Settings > Control Plane > API
+    usage: env
+  - key: UNIFI_VERIFY_SSL
+    name: Verify SSL
+    required: false
+    sensitive: false
+    description: Whether to verify SSL certificates when connecting to UniFi (true/false, default true)
+    usage: env

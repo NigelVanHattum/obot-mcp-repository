@@ -27,7 +27,6 @@ description: |
   ## What you'll need to connect
   An API key and secret generated in the Trading 212 app under Settings > API.
   Trading 212's API is available for Invest and Stocks ISA accounts.
-
 metadata:
   categories: Finance
   allow-multiple: "true"
@@ -38,23 +37,6 @@ containerizedConfig:
   image: ghcr.io/nigelvanhattum/trading212-mcp:latest
   port: 8000
   path: "/mcp"
-env:
-  - key: TRADING212_API_KEY
-    name: Trading 212 API Key
-    required: true
-    sensitive: true
-    description: API key generated in the Trading 212 app under Settings > API
-  - key: TRADING212_API_SECRET
-    name: Trading 212 API Secret
-    required: true
-    sensitive: true
-    description: API secret shown once when the key is generated
-  - key: TRADING212_LIVE
-    name: Use Live Environment
-    required: false
-    sensitive: false
-    description: Set to true to use the live (real money) environment; anything else uses demo/paper (default)
-
 toolPreview:
   - name: get_account_summary
     description: Get a breakdown of the account's cash and investment metrics.
@@ -143,3 +125,22 @@ toolPreview:
       includeInterest: Include interest in the export (default true)
       includeOrders: Include orders in the export (default true)
       includeTransactions: Include transactions in the export (default true)
+config:
+  - key: TRADING212_API_KEY
+    name: Trading 212 API Key
+    required: true
+    sensitive: true
+    description: API key generated in the Trading 212 app under Settings > API
+    usage: env
+  - key: TRADING212_API_SECRET
+    name: Trading 212 API Secret
+    required: true
+    sensitive: true
+    description: API secret shown once when the key is generated
+    usage: env
+  - key: TRADING212_LIVE
+    name: Use Live Environment
+    required: false
+    sensitive: false
+    description: Set to true to use the live (real money) environment; anything else uses demo/paper (default)
+    usage: env

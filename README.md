@@ -20,7 +20,7 @@ Each MCP server is defined by a single YAML file at the root of the repository.
 | `runtime` | `containerized`, `npx` (Node package), `uvx` (Python package) |
 | `containerizedConfig` | `image`, `port`, `path` for containerized servers |
 | `npxConfig` | `package` (npm package spec) for `npx` servers |
-| `env` | List of required/optional environment variables |
+| `config` | Required/optional settings; `usage: env` passes one as an environment variable (Obot v0.26+ schema) |
 | `toolPreview` | Sample tools exposed by the server |
 
 ## Adding a Server

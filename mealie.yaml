@@ -24,7 +24,6 @@ description: |
   - A Mealie API token — create one under your profile at **Settings > API Tokens**
 
   The server connects to Mealie using API keys only.
-
 metadata:
   categories: Productivity
   allow-multiple: "false"
@@ -35,23 +34,6 @@ containerizedConfig:
   image: ghcr.io/nigelvanhattum/mealie-mcp:latest
   port: 8000
   path: "/mcp"
-env:
-  - key: MEALIE_BASE_URL
-    name: Mealie Base URL
-    required: true
-    sensitive: false
-    description: Base URL of your Mealie instance, without a trailing slash (e.g. https://mealie.example.com)
-  - key: MEALIE_API_TOKEN
-    name: Mealie API Token
-    required: true
-    sensitive: true
-    description: Long-lived API token from Mealie under Settings > API Tokens. Sent as a Bearer token.
-  - key: MEALIE_VERIFY_SSL
-    name: Verify SSL
-    required: false
-    sensitive: false
-    description: Whether to verify SSL certificates when connecting to Mealie (true/false, default true)
-
 toolPreview:
   - name: get_current_user
     description: Get the authenticated Mealie user — verifies the API token works.
@@ -117,3 +99,22 @@ toolPreview:
     description: Create an ingredient unit.
     params:
       name: Unit name (e.g. gram)
+config:
+  - key: MEALIE_BASE_URL
+    name: Mealie Base URL
+    required: true
+    sensitive: false
+    description: Base URL of your Mealie instance, without a trailing slash (e.g. https://mealie.example.com)
+    usage: env
+  - key: MEALIE_API_TOKEN
+    name: Mealie API Token
+    required: true
+    sensitive: true
+    description: Long-lived API token from Mealie under Settings > API Tokens. Sent as a Bearer token.
+    usage: env
+  - key: MEALIE_VERIFY_SSL
+    name: Verify SSL
+    required: false
+    sensitive: false
+    description: Whether to verify SSL certificates when connecting to Mealie (true/false, default true)
+    usage: env
