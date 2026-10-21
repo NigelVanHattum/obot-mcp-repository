@@ -23,7 +23,6 @@ description: |
   - A Paperclip API key — the bearer token used for `/api` requests. Its permissions decide
     what the tools can see and change.
   - Optionally a default company ID, so company-scoped tools work without passing one each time
-
 metadata:
   categories: Productivity
   allow-multiple: "false"
@@ -32,28 +31,6 @@ repoURL: https://github.com/paperclipai/paperclip/tree/master/packages/mcp-serve
 runtime: npx
 npxConfig:
   package: "@paperclipai/mcp-server@latest"
-env:
-  - key: PAPERCLIP_API_URL
-    name: Paperclip API URL
-    required: true
-    sensitive: false
-    description: Base URL of your Paperclip instance (e.g. https://paperclip.example.com). The /api suffix is added automatically.
-  - key: PAPERCLIP_API_KEY
-    name: Paperclip API Key
-    required: true
-    sensitive: true
-    description: Bearer token used for Paperclip /api requests
-  - key: PAPERCLIP_COMPANY_ID
-    name: Default Company ID
-    required: false
-    sensitive: false
-    description: Company UUID used by company-scoped tools when no companyId is passed
-  - key: PAPERCLIP_AGENT_ID
-    name: Default Agent ID
-    required: false
-    sensitive: false
-    description: Agent UUID used by the checkout helpers when no agentId is passed
-
 toolPreview:
   - name: paperclipMe
     description: Get the current authenticated Paperclip actor details.
@@ -145,3 +122,28 @@ toolPreview:
       method: HTTP method (GET, POST, PUT, PATCH or DELETE)
       path: Path under /api
       jsonBody: Optional JSON request body as a string
+config:
+  - key: PAPERCLIP_API_URL
+    name: Paperclip API URL
+    required: true
+    sensitive: false
+    description: Base URL of your Paperclip instance (e.g. https://paperclip.example.com). The /api suffix is added automatically.
+    usage: env
+  - key: PAPERCLIP_API_KEY
+    name: Paperclip API Key
+    required: true
+    sensitive: true
+    description: Bearer token used for Paperclip /api requests
+    usage: env
+  - key: PAPERCLIP_COMPANY_ID
+    name: Default Company ID
+    required: false
+    sensitive: false
+    description: Company UUID used by company-scoped tools when no companyId is passed
+    usage: env
+  - key: PAPERCLIP_AGENT_ID
+    name: Default Agent ID
+    required: false
+    sensitive: false
+    description: Agent UUID used by the checkout helpers when no agentId is passed
+    usage: env
