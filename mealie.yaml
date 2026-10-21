@@ -34,7 +34,7 @@ runtime: containerized
 containerizedConfig:
   image: ghcr.io/nigelvanhattum/mealie-mcp:latest
   port: 8000
-  path: "/sse"
+  path: "/mcp"
 env:
   - key: MEALIE_BASE_URL
     name: Mealie Base URL

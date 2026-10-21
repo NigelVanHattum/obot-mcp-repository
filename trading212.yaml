@@ -37,7 +37,7 @@ runtime: containerized
 containerizedConfig:
   image: ghcr.io/nigelvanhattum/trading212-mcp:latest
   port: 8000
-  path: "/sse"
+  path: "/mcp"
 env:
   - key: TRADING212_API_KEY
     name: Trading 212 API Key
