@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       image_name:
-        description: "Container image name (without tag)"
+        description: "Image to retag, without the tag: the bare name (unifi-mcp) or the full base (ghcr.io/nigelvanhattum/unifi-mcp)"
         required: true
         type: string
       new_tag:
@@ -70,8 +70,11 @@ jobs:
                       current_image = data['containerizedConfig']['image']
                       print(f"Found image in {yaml_file}: {current_image}")
 
-                      if image_name in current_image:
-                          image_base = current_image.rsplit(':', 1)[0] if ':' in current_image else current_image
+                      image_base = current_image.rsplit(':', 1)[0] if ':' in current_image else current_image
+
+                      # Exact match on the base, never a substring: every catalog image shares
+                      # ghcr.io/nigelvanhattum/, so "mcp" or "ghcr.io" would retag all of them.
+                      if image_name in (image_base, image_base.rsplit('/', 1)[-1]):
                           new_image = f"{image_base}:{new_tag}"
 
                           print(f"Updating {yaml_file}: {current_image} -> {new_image}")
