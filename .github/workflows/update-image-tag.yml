@@ -37,14 +37,17 @@ jobs:
 
       - name: Update image tag in YAML files
         id: update-files
+        env:
+          IMAGE_NAME: ${{ github.event.inputs.image_name || github.event.client_payload.image_name }}
+          NEW_TAG: ${{ github.event.inputs.new_tag || github.event.client_payload.new_tag }}
         run: |
           python3 << 'EOF'
           from ruamel.yaml import YAML
           import os
           from pathlib import Path
 
-          image_name = "${{ github.event.inputs.image_name || github.event.client_payload.image_name }}"
-          new_tag = "${{ github.event.inputs.new_tag || github.event.client_payload.new_tag }}"
+          image_name = os.environ['IMAGE_NAME']
+          new_tag = os.environ['NEW_TAG']
 
           print(f"Looking for image: {image_name}")
           print(f"New tag: {new_tag}")
@@ -115,9 +118,12 @@ jobs:
           delete-branch: true
 
       - name: Output results
+        env:
+          FILES_UPDATED: ${{ steps.update-files.outputs.files_updated }}
+          UPDATED_FILES: ${{ steps.update-files.outputs.updated_files }}
         run: |
-          if [ "${{ steps.update-files.outputs.files_updated }}" == "true" ]; then
-            echo "✅ Updated image tag in: ${{ steps.update-files.outputs.updated_files }}"
+          if [ "$FILES_UPDATED" == "true" ]; then
+            echo "✅ Updated image tag in: $UPDATED_FILES"
           else
             echo "❌ No files updated. Check image name exists in a YAML file with containerizedConfig.image field."
             exit 1
