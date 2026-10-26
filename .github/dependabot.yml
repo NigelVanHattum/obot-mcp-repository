@@ -1,8 +1,6 @@
 version: 2
 updates:
-  # Workflows pin every `uses:` to a commit SHA, so a moved or vulnerable action
-  # version can only reach CI through a PR here. Without this block the pins
-  # never move and a published action CVE sits in the workflows unnoticed.
+  # Moves the SHA pins in .github/workflows/.
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
