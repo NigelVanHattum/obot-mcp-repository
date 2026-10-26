@@ -1,0 +1,15 @@
+[extend]
+useDefault = true
+
+# `config[].key` is an Obot config-schema field name; its value is the *name* of an
+# environment variable Obot injects, never a secret value.
+#
+# Deliberately matched on the line, not on `paths`: a global allowlist with `paths`
+# skips the whole file regardless of `matchCondition`, so a real secret pasted into
+# trading212.yaml would pass. This regex only ever matches a YAML key whose value is a
+# TRADING212_ variable name, so every other line in that file is still scanned.
+[[allowlists]]
+description = "Obot config[].key env var names are not secrets"
+targetRules = ["generic-api-key"]
+regexTarget = "line"
+regexes = ['''^\s*-\s*key:\s*TRADING212_[A-Z0-9_]+\s*$''']
