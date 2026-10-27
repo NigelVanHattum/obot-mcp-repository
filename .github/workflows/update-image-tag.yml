@@ -47,8 +47,14 @@ jobs:
           import os
           from pathlib import Path
 
-          image_name = os.environ['IMAGE_NAME']
-          new_tag = os.environ['NEW_TAG']
+          image_name = os.environ['IMAGE_NAME'].strip()
+          new_tag = os.environ['NEW_TAG'].strip()
+
+          # A step env: whose expression is empty is "" and not unset, and an empty image_name substring-matches every image.
+          if not image_name:
+              raise SystemExit("image_name is empty: pass it as a workflow_dispatch input or a repository_dispatch client_payload field")
+          if not new_tag:
+              raise SystemExit("new_tag is empty: pass it as a workflow_dispatch input or a repository_dispatch client_payload field")
 
           print(f"Looking for image: {image_name}")
           print(f"New tag: {new_tag}")
