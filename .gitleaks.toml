@@ -1,0 +1,11 @@
+[extend]
+useDefault = true
+
+# Do not "simplify" this to a `paths` allowlist: a global allowlist with `paths` skips
+# the whole file regardless of `matchCondition`, so a real secret pasted into
+# trading212.yaml would pass. Match on the line shape instead.
+[[allowlists]]
+description = "Obot config[].key env var names are not secrets"
+targetRules = ["generic-api-key"]
+regexTarget = "line"
+regexes = ['''^\s*-\s*key:\s*TRADING212_[A-Z0-9_]+\s*$''']
