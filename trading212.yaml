@@ -1,18 +1,19 @@
 name: Trading 212
-shortDescription: Read account data and manage equity orders and positions via the Trading 212 API
+shortDescription: Read account data and manage equity orders, positions and pies via the Trading 212 API
 description: |
   # Trading 212 MCP Server
 
   Interact with your Trading 212 Invest / Stocks ISA account through natural language.
   Read your account summary and open positions, browse instrument and exchange metadata,
-  place and cancel equity orders, review historical orders, dividends and transactions,
-  and request CSV exports.
+  place and cancel equity orders, build and rebalance pies, review historical orders,
+  dividends and transactions, and request CSV exports.
 
   ## Features
   - **Account**: Account cash & investment summary, open positions for the whole portfolio or a single instrument
   - **Instruments**: Search the instrument catalogue by Trading 212 ID, ISIN, name or type, plus exchange schedules
   - **Orders**: Place market / limit / stop / stop-limit orders, list, inspect and cancel orders
   - **History**: Historical orders, paid dividends, account transactions, CSV exports
+  - **Pies**: Create, inspect, duplicate and delete pies, and set a pie's allocation as a ticker to fraction map
 
   ## Rate limits
   Trading 212 applies its rate limits per account. Calls are queued and paced
@@ -125,6 +126,40 @@ toolPreview:
       includeInterest: Include interest in the export (default true)
       includeOrders: Include orders in the export (default true)
       includeTransactions: Include transactions in the export (default true)
+  - name: list_pies
+    description: List every pie in the account with its name, allocation and current value.
+    params: {}
+  - name: create_pie
+    description: Create a pie with a given allocation, dividend handling and goal.
+    params:
+      name: Pie name/label
+      instrumentShares: 'Allocation as a ticker to fraction map adding up to 1, e.g. {"AAPL_US_EQ": 0.5, "MSFT_US_EQ": 0.5}'
+      icon: Icon name shown next to the pie in the Trading 212 app
+      dividendCashAction: What to do with dividends, REINVEST or TO_ACCOUNT_CASH
+      goal: Total desired value of the pie, in account currency
+      endDate: Date the goal is aimed at, ISO-8601 e.g. 2030-01-01T00:00:00Z
+  - name: get_pie
+    description: Get a pie's allocation, composition and performance metrics.
+    params:
+      id: Pie ID
+  - name: update_pie
+    description: Set a pie's allocation and settings; the body replaces them, so read get_pie first.
+    params:
+      id: Pie ID
+      instrumentShares: 'Allocation as a ticker to fraction map adding up to 1, e.g. {"AAPL_US_EQ": 0.5, "MSFT_US_EQ": 0.5}'
+      name: Pie name/label
+      icon: Icon name shown next to the pie in the Trading 212 app
+      dividendCashAction: What to do with dividends, REINVEST or TO_ACCOUNT_CASH
+      goal: Total desired value of the pie, in account currency
+      endDate: Date the goal is aimed at, ISO-8601 e.g. 2030-01-01T00:00:00Z
+  - name: delete_pie
+    description: Delete a fully liquidated pie from the account.
+    params:
+      id: Pie ID to delete
+  - name: duplicate_pie
+    description: Copy an existing pie with all its allocations and settings.
+    params:
+      id: Source pie ID to duplicate
 config:
   - key: TRADING212_API_KEY
     name: Trading 212 API Key
