@@ -160,6 +160,8 @@ toolPreview:
     description: Copy an existing pie with all its allocations and settings.
     params:
       id: Source pie ID to duplicate
+      name: Name for the copy; inherits the source's when left off
+      icon: Icon for the copy; inherits the source's when left off
 config:
   - key: TRADING212_API_KEY
     name: Trading 212 API Key
