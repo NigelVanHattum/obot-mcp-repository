@@ -35,7 +35,7 @@ icon: https://www.svgrepo.com/show/501857/line-chart.svg
 repoURL: https://github.com/NigelVanHattum/trading212-mcp
 runtime: containerized
 containerizedConfig:
-  image: ghcr.io/nigelvanhattum/trading212-mcp:1.2.0
+  image: ghcr.io/nigelvanhattum/trading212-mcp:1.2.1
   port: 8000
   path: "/mcp"
 toolPreview:
