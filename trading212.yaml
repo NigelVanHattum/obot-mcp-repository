@@ -35,149 +35,149 @@ icon: https://www.svgrepo.com/show/501857/line-chart.svg
 repoURL: https://github.com/NigelVanHattum/trading212-mcp
 runtime: containerized
 containerizedConfig:
-  image: ghcr.io/nigelvanhattum/trading212-mcp:latest
+  image: ghcr.io/nigelvanhattum/trading212-mcp:1.2.0
   port: 8000
   path: "/mcp"
 toolPreview:
-  - name: get_account_summary
-    description: Get a breakdown of the account's cash and investment metrics.
-    params: {}
-  - name: get_positions
-    description: Fetch open positions with quantity, average price and profit/loss.
-    params:
-      ticker: Optional Trading 212 instrument ID, e.g. AAPL_US_EQ; omit for every open position
-  - name: list_instruments
-    description: Search tradable instruments by Trading 212 ID, ISIN, name or type.
-    params:
-      trading212Id: Trading 212 instrument ID, e.g. AAPL_US_EQ; matches exact, prefix or substring
-      isin: ISIN, e.g. US0378331005; exact match, case and spacing ignored
-      name: Instrument name, e.g. Coca Cola; punctuation ignored, every word must appear
-      type: Restrict to one instrument type, e.g. STOCK or ETF
-      limit: Maximum instruments to return (default 20, max 100)
-  - name: list_exchanges
-    description: List all accessible exchanges and their working schedules.
-    params: {}
-  - name: list_orders
-    description: List all active (pending) orders.
-    params: {}
-  - name: get_order
-    description: Get a specific pending order by its ID.
-    params:
-      id: Order ID
-  - name: cancel_order
-    description: Cancel a pending order by its ID.
-    params:
-      id: Order ID
-  - name: place_market_order
-    description: Place a market order (positive quantity buys, negative sells).
-    params:
-      ticker: Instrument ticker, e.g. AAPL_US_EQ
-      quantity: Share quantity; positive = buy, negative = sell
-      extendedHours: Allow execution during extended trading hours
-  - name: place_limit_order
-    description: Place a limit order that executes at limitPrice or better.
-    params:
-      ticker: Instrument ticker, e.g. AAPL_US_EQ
-      quantity: Share quantity; positive = buy, negative = sell
-      limitPrice: Limit price
-      timeValidity: Order time validity, DAY or GOOD_TILL_CANCEL
-  - name: place_stop_order
-    description: Place a stop order triggered when the price reaches stopPrice.
-    params:
-      ticker: Instrument ticker, e.g. AAPL_US_EQ
-      quantity: Share quantity; positive = buy, negative = sell
-      stopPrice: Trigger price
-      timeValidity: Order time validity, DAY or GOOD_TILL_CANCEL
-  - name: place_stop_limit_order
-    description: Place a stop-limit order triggered at stopPrice, then placed at limitPrice.
-    params:
-      ticker: Instrument ticker, e.g. AAPL_US_EQ
-      quantity: Share quantity; positive = buy, negative = sell
-      stopPrice: Trigger price
-      limitPrice: Limit price applied after trigger
-      timeValidity: Order time validity, DAY or GOOD_TILL_CANCEL
-  - name: get_historical_orders
-    description: Access historical order records.
-    params:
-      limit: Page size (default 20, max 50)
-      cursor: Pagination cursor from the previous page's nextPagePath
-      ticker: Optional Trading 212 instrument ID filter, e.g. AAPL_US_EQ
-  - name: get_dividends
-    description: Retrieve paid dividends.
-    params:
-      limit: Page size (default 20, max 50)
-      cursor: Pagination cursor from the previous page's nextPagePath
-      ticker: Optional Trading 212 instrument ID filter, e.g. AAPL_US_EQ
-  - name: get_transactions
-    description: Fetch cash movements to and from the account.
-    params:
-      limit: Page size (default 20, max 50)
-      cursor: Pagination cursor from the previous page's nextPagePath
-      time: Return transactions from this moment onwards, ISO-8601 e.g. 2024-01-01T00:00:00Z
-  - name: list_exports
-    description: List requested CSV reports and their generation status.
-    params: {}
-  - name: request_export
-    description: Request a CSV export of historical account data over a time window.
-    params:
-      timeFrom: Start of window, ISO-8601 e.g. 2024-01-01T00:00:00Z
-      timeTo: End of window, ISO-8601 e.g. 2024-12-31T00:00:00Z
-      includeDividends: Include dividends in the export (default true)
-      includeInterest: Include interest in the export (default true)
-      includeOrders: Include orders in the export (default true)
-      includeTransactions: Include transactions in the export (default true)
-  - name: list_pies
-    description: List every pie in the account with its name, allocation and current value.
-    params: {}
-  - name: create_pie
-    description: Create a pie with a given allocation, dividend handling and goal.
-    params:
-      name: Pie name/label
-      instrumentShares: 'Allocation as a ticker to fraction map adding up to 1, e.g. {"AAPL_US_EQ": 0.5, "MSFT_US_EQ": 0.5}'
-      icon: Icon name shown next to the pie in the Trading 212 app
-      dividendCashAction: What to do with dividends, REINVEST or TO_ACCOUNT_CASH
-      goal: Total desired value of the pie, in account currency
-      endDate: Date the goal is aimed at, ISO-8601 e.g. 2030-01-01T00:00:00Z
-  - name: get_pie
-    description: Get a pie's allocation, composition and performance metrics.
-    params:
-      id: Pie ID
-  - name: update_pie
-    description: Set a pie's allocation and settings; the body replaces them, so read get_pie first.
-    params:
-      id: Pie ID
-      instrumentShares: 'Allocation as a ticker to fraction map adding up to 1, e.g. {"AAPL_US_EQ": 0.5, "MSFT_US_EQ": 0.5}'
-      name: Pie name/label
-      icon: Icon name shown next to the pie in the Trading 212 app
-      dividendCashAction: What to do with dividends, REINVEST or TO_ACCOUNT_CASH
-      goal: Total desired value of the pie, in account currency
-      endDate: Date the goal is aimed at, ISO-8601 e.g. 2030-01-01T00:00:00Z
-  - name: delete_pie
-    description: Delete a fully liquidated pie from the account.
-    params:
-      id: Pie ID to delete
-  - name: duplicate_pie
-    description: Copy an existing pie with all its allocations and settings.
-    params:
-      id: Source pie ID to duplicate
-      name: Name for the copy; inherits the source's when left off
-      icon: Icon for the copy; inherits the source's when left off
+- name: get_account_summary
+  description: Get a breakdown of the account's cash and investment metrics.
+  params: {}
+- name: get_positions
+  description: Fetch open positions with quantity, average price and profit/loss.
+  params:
+    ticker: Optional Trading 212 instrument ID, e.g. AAPL_US_EQ; omit for every open position
+- name: list_instruments
+  description: Search tradable instruments by Trading 212 ID, ISIN, name or type.
+  params:
+    trading212Id: Trading 212 instrument ID, e.g. AAPL_US_EQ; matches exact, prefix or substring
+    isin: ISIN, e.g. US0378331005; exact match, case and spacing ignored
+    name: Instrument name, e.g. Coca Cola; punctuation ignored, every word must appear
+    type: Restrict to one instrument type, e.g. STOCK or ETF
+    limit: Maximum instruments to return (default 20, max 100)
+- name: list_exchanges
+  description: List all accessible exchanges and their working schedules.
+  params: {}
+- name: list_orders
+  description: List all active (pending) orders.
+  params: {}
+- name: get_order
+  description: Get a specific pending order by its ID.
+  params:
+    id: Order ID
+- name: cancel_order
+  description: Cancel a pending order by its ID.
+  params:
+    id: Order ID
+- name: place_market_order
+  description: Place a market order (positive quantity buys, negative sells).
+  params:
+    ticker: Instrument ticker, e.g. AAPL_US_EQ
+    quantity: Share quantity; positive = buy, negative = sell
+    extendedHours: Allow execution during extended trading hours
+- name: place_limit_order
+  description: Place a limit order that executes at limitPrice or better.
+  params:
+    ticker: Instrument ticker, e.g. AAPL_US_EQ
+    quantity: Share quantity; positive = buy, negative = sell
+    limitPrice: Limit price
+    timeValidity: Order time validity, DAY or GOOD_TILL_CANCEL
+- name: place_stop_order
+  description: Place a stop order triggered when the price reaches stopPrice.
+  params:
+    ticker: Instrument ticker, e.g. AAPL_US_EQ
+    quantity: Share quantity; positive = buy, negative = sell
+    stopPrice: Trigger price
+    timeValidity: Order time validity, DAY or GOOD_TILL_CANCEL
+- name: place_stop_limit_order
+  description: Place a stop-limit order triggered at stopPrice, then placed at limitPrice.
+  params:
+    ticker: Instrument ticker, e.g. AAPL_US_EQ
+    quantity: Share quantity; positive = buy, negative = sell
+    stopPrice: Trigger price
+    limitPrice: Limit price applied after trigger
+    timeValidity: Order time validity, DAY or GOOD_TILL_CANCEL
+- name: get_historical_orders
+  description: Access historical order records.
+  params:
+    limit: Page size (default 20, max 50)
+    cursor: Pagination cursor from the previous page's nextPagePath
+    ticker: Optional Trading 212 instrument ID filter, e.g. AAPL_US_EQ
+- name: get_dividends
+  description: Retrieve paid dividends.
+  params:
+    limit: Page size (default 20, max 50)
+    cursor: Pagination cursor from the previous page's nextPagePath
+    ticker: Optional Trading 212 instrument ID filter, e.g. AAPL_US_EQ
+- name: get_transactions
+  description: Fetch cash movements to and from the account.
+  params:
+    limit: Page size (default 20, max 50)
+    cursor: Pagination cursor from the previous page's nextPagePath
+    time: Return transactions from this moment onwards, ISO-8601 e.g. 2024-01-01T00:00:00Z
+- name: list_exports
+  description: List requested CSV reports and their generation status.
+  params: {}
+- name: request_export
+  description: Request a CSV export of historical account data over a time window.
+  params:
+    timeFrom: Start of window, ISO-8601 e.g. 2024-01-01T00:00:00Z
+    timeTo: End of window, ISO-8601 e.g. 2024-12-31T00:00:00Z
+    includeDividends: Include dividends in the export (default true)
+    includeInterest: Include interest in the export (default true)
+    includeOrders: Include orders in the export (default true)
+    includeTransactions: Include transactions in the export (default true)
+- name: list_pies
+  description: List every pie in the account with its name, allocation and current value.
+  params: {}
+- name: create_pie
+  description: Create a pie with a given allocation, dividend handling and goal.
+  params:
+    name: Pie name/label
+    instrumentShares: 'Allocation as a ticker to fraction map adding up to 1, e.g. {"AAPL_US_EQ": 0.5, "MSFT_US_EQ": 0.5}'
+    icon: Icon name shown next to the pie in the Trading 212 app
+    dividendCashAction: What to do with dividends, REINVEST or TO_ACCOUNT_CASH
+    goal: Total desired value of the pie, in account currency
+    endDate: Date the goal is aimed at, ISO-8601 e.g. 2030-01-01T00:00:00Z
+- name: get_pie
+  description: Get a pie's allocation, composition and performance metrics.
+  params:
+    id: Pie ID
+- name: update_pie
+  description: Set a pie's allocation and settings; the body replaces them, so read get_pie first.
+  params:
+    id: Pie ID
+    instrumentShares: 'Allocation as a ticker to fraction map adding up to 1, e.g. {"AAPL_US_EQ": 0.5, "MSFT_US_EQ": 0.5}'
+    name: Pie name/label
+    icon: Icon name shown next to the pie in the Trading 212 app
+    dividendCashAction: What to do with dividends, REINVEST or TO_ACCOUNT_CASH
+    goal: Total desired value of the pie, in account currency
+    endDate: Date the goal is aimed at, ISO-8601 e.g. 2030-01-01T00:00:00Z
+- name: delete_pie
+  description: Delete a fully liquidated pie from the account.
+  params:
+    id: Pie ID to delete
+- name: duplicate_pie
+  description: Copy an existing pie with all its allocations and settings.
+  params:
+    id: Source pie ID to duplicate
+    name: Name for the copy; inherits the source's when left off
+    icon: Icon for the copy; inherits the source's when left off
 config:
-  - key: TRADING212_API_KEY
-    name: Trading 212 API Key
-    required: true
-    sensitive: true
-    description: API key generated in the Trading 212 app under Settings > API
-    usage: env
-  - key: TRADING212_API_SECRET
-    name: Trading 212 API Secret
-    required: true
-    sensitive: true
-    description: API secret shown once when the key is generated
-    usage: env
-  - key: TRADING212_LIVE
-    name: Use Live Environment
-    required: false
-    sensitive: false
-    description: Set to true to use the live (real money) environment; anything else uses demo/paper (default)
-    usage: env
+- key: TRADING212_API_KEY
+  name: Trading 212 API Key
+  required: true
+  sensitive: true
+  description: API key generated in the Trading 212 app under Settings > API
+  usage: env
+- key: TRADING212_API_SECRET
+  name: Trading 212 API Secret
+  required: true
+  sensitive: true
+  description: API secret shown once when the key is generated
+  usage: env
+- key: TRADING212_LIVE
+  name: Use Live Environment
+  required: false
+  sensitive: false
+  description: Set to true to use the live (real money) environment; anything else uses demo/paper (default)
+  usage: env
