@@ -68,6 +68,11 @@ jobs:
                   yaml = YAML()
                   yaml.preserve_quotes = True
                   yaml.width = 4096
+                  # ruamel's default is sequence=2/offset=0, which de-indents
+                  # every list item in the file and turns a one-line retag into
+                  # a whole-file diff. These match how the entries are written,
+                  # so the round-trip comes back byte-identical.
+                  yaml.indent(mapping=2, sequence=4, offset=2)
 
                   with open(yaml_file, 'r') as f:
                       data = yaml.load(f)
